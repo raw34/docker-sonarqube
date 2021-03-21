@@ -1,0 +1,29 @@
+### postgresql
+postgres:
+  image: postgres:12-alpine
+  container_name:
+    docker_postgres_1
+  ports:
+#    - "5432:5432"
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: 123456
+    POSTGRES_DB: sonarqube
+  volumes:
+    - $PATH_WWW_DATA/postgresql:/var/lib/postgresql/data
+
+### sonarqube
+sonarqube:
+  image: raw34/sonarqube
+  container_name:
+    docker_sonarqube_1
+  ports:
+    - "9000:9000"
+  environment:
+    SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: 1
+  volumes:
+#    - ./sonar.properties:/opt/sonarqube/conf/sonar.properties
+    - $PATH_WWW_LOG/sonarqube:/opt/sonarqube/logs
+    - $PATH_WWW_DATA/sonarqube:/opt/sonarqube/data
+  links:
+    - postgres
